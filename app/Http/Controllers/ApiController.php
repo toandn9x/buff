@@ -324,8 +324,6 @@ class ApiController extends Controller
                     continue;
                 }
                 // end login
-
-
                 $arr_param = [
                     "amount" => 20,
                     "link" => $link,
@@ -348,8 +346,9 @@ class ApiController extends Controller
                 }
             
                 $body = $response->getBody()->getContents();  
-                $mess_0 = json_decode($body, true);
-                $mess[] = ["key" => 0, "message" => $mess_0];
+                $data = json_decode($body, true);
+                $decodedMessage = html_entity_decode($data['messages'], ENT_QUOTES, 'UTF-8');
+                $mess[] = ["key" => 0, "message" => $decodedMessage];
             }
             if ($key == 1) {
                 
@@ -380,7 +379,6 @@ class ApiController extends Controller
                 ]);
                 $body = $response->getBody()->getContents();
                 $body = response($body)->header('Content-Type', 'text/html');
-                echo $body;
                 $mess[] = ["key" => 1, "message" => $body];
                 
             }
