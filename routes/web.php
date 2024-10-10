@@ -9,5 +9,7 @@ Route::get('/', function () {
 });
 
 Route::get('/test', [PdfParserController::class, 'test']);
-Route::get('/test2', [ApiController::class, 'banks']);
-
+Route::get('/sign', [PdfParserController::class, 'sign']);
+Route::post('/sign-pdf', [PdfParserController::class, 'signPdf']);
+Route::get('/aicevn', [PdfParserController::class, 'aicevn']);
+Route::post('/paicevn', [PdfParserController::class, 'paicevn']);

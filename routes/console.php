@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 
 
 Route::get('/banks', [ApiController::class, 'banks']);
+Route::get('/aicevn', [Controller::class, 'aicevn']);

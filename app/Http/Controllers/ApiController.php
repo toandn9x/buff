@@ -101,17 +101,17 @@ class ApiController extends Controller
                 if ($jar->getCookieByName("XSRF-TOKEN")) {
                     // Xóa cookie
                     $jar->removeCookie("XSRF-TOKEN");
-                
+
                 }
                 if ($jar->getCookieByName("app_mua_like_session")) {
                     // Xóa cookie
                     $jar->removeCookie("app_mua_like_session");
-                   
+
                 }
                 if ($jar->getCookieByName("remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d")) {
                     // Xóa cookie
                     $jar->removeCookie("remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d");
-                  
+
                 }
                 $body = $pattern = $cookies = $token = $body_2 = $body_3 = $token_2 = NULL;
                 $response = $client->request('POST', $link_login, [
@@ -135,7 +135,7 @@ class ApiController extends Controller
                 } else {
                     // Nếu không tìm thấy kết quả, bỏ qua vòng lặp
                     $message[] = ["status" => 0, "user" => $a["user"], "pass" => $a["pass"], "status" => "Lỗi! Tài khoản không tồn tạiii"];
-                    continue; 
+                    continue;
                 }
                 $cookies = $jar->getIterator();
                 // login lan 2 voi token
@@ -147,22 +147,22 @@ class ApiController extends Controller
                         'password' => $a["pass"],
                         'remember' => 'on'
                     ]
-                
+
                 ]);
-                $body_2 = $response->getBody()->getContents();  
+                $body_2 = $response->getBody()->getContents();
                 preg_match($pattern, $body_2, $matches);
                 if (isset($matches[1])) {
                     $token_2 = $matches[1];
                 } else {
                     // Nếu không tìm thấy kết quả, bỏ qua vòng lặp
                     $message[] = ["status" => 0, "user" => $a["user"], "pass" => $a["pass"], "status" => "Lỗi! Tài khoản không tồn tạiii"];
-                    continue; 
+                    continue;
                 }
                 $cookies = $jar->getIterator();
 
-        
-            
-        
+
+
+
                 if (!empty($token_2)) {
                     // call api buff 50 like
                     $form_params = ["_token" => $token_2, "post_link" => $link_fb, "server_id" => 806, "number_seeding" => 20];
@@ -200,15 +200,15 @@ class ApiController extends Controller
                 else {
                     return response()->json(["status" => 0, "message" => "token not found!"]);
                 }
-    
-    
-    
+
+
+
             }
             return response()->json(["status" => 1, "message" => $message], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
         }
         else return response()->json(["status" => 0, "message" => "Link not found!"]);
-    
+
     }
 
     function generateRandomIPv4() {
@@ -217,7 +217,7 @@ class ApiController extends Controller
         $part2 = 168;
         $part3 = rand(0, 255);
         $part4 = rand(1, 254); // Tránh không sử dụng 0 và 255
-        
+
         // Tạo địa chỉ IP
         $ipAddress = sprintf('%d.%d.%d.%d', $part1, $part2, $part3, $part4);
         return $ipAddress;
@@ -274,7 +274,7 @@ class ApiController extends Controller
             'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36',
             'Mozilla/5.0 (Linux; Android 11; SM-G998B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Mobile Safari/537.36'
         ];
-    
+
         // Lấy ngẫu nhiên một User-Agent từ mảng
         return $userAgents[array_rand($userAgents)];
     }
@@ -284,7 +284,7 @@ class ApiController extends Controller
             '160.86.242.23:8080',
             '52.53.221.181:3128'
         ];
-    
+
         // Lấy ngẫu nhiên một User-Agent từ mảng
         return $proxy[array_rand($proxy)];
     }
@@ -308,8 +308,8 @@ class ApiController extends Controller
                 $user_name = "ahihihihi" . $random;
                 $password = "ahihihihi" . $random;
                 $response = $client->request('POST', "https://100like.vn/api/auth/register?username=$user_name&password=$password");
-                $body = $response->getBody()->getContents();  
-              
+                $body = $response->getBody()->getContents();
+
                 // login
                 $response = $client->request('POST', "https://100like.vn/api/auth/login?username=$user_name&password=$password", [
                     'cookies' => $jar,
@@ -344,14 +344,14 @@ class ApiController extends Controller
                 } catch (Exception $e) {
                     $body = $e->getResponse()->getBody()->getContents();
                 }
-            
-                $body = $response->getBody()->getContents();  
+
+                $body = $response->getBody()->getContents();
                 $data = json_decode($body, true);
                 $decodedMessage = html_entity_decode($data['messages'], ENT_QUOTES, 'UTF-8');
-                $mess[] = ["key" => 0, "message" => $decodedMessage];
+                $mess[] = ["key" => 0, "message" => $decodedMessage, "user" => $user_name, "password" => $password];
             }
             if ($key == 1) {
-                
+
                 // get uid
                 $response = $client->request('POST', "https://app.likeqq.vn/api/get-uid", [
                     'json' => ["link" => $link],
@@ -363,12 +363,12 @@ class ApiController extends Controller
                 // echo "</pre>";
                 $uid = $res["data"]["objectId"];
                 $full_link = $res["data"]["objectUrl"];
-                
+
                 $arr_param_2 = [
                     "id" => $uid,
                     "linkfull" => $full_link
                 ];
-                
+
                 $response = $client->request('POST', $value, [
                     'form_params' => $arr_param_2,
                     'headers' => [
@@ -380,7 +380,7 @@ class ApiController extends Controller
                 $body = $response->getBody()->getContents();
                 $body = response($body)->header('Content-Type', 'text/html');
                 $mess[] = ["key" => 1, "message" => $body];
-                
+
             }
             $jar->clear();
         }
@@ -390,12 +390,12 @@ class ApiController extends Controller
     function randomString($length) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; // Tập hợp có ký tự đặc biệt
         $randomString = '';
-        
+
         for ($i = 0; $i < $length; $i++) {
             $randomIndex = rand(0, strlen($characters) - 1); // Lấy ngẫu nhiên chỉ mục từ tập hợp
             $randomString .= $characters[$randomIndex]; // Thêm ký tự ngẫu nhiên vào chuỗi
         }
-        
+
         return $randomString; // Trả về chuỗi ngẫu nhiên
     }
 }
